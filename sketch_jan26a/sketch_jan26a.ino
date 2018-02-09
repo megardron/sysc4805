@@ -14,8 +14,8 @@ int black = HIGH;
 int left;
 int right;
 int swtch;
-int leftSpeed = 200;
-int rightSpeed = 225;
+int leftSpeed = 180;
+int rightSpeed = 205;
 int turnNumber = 0;
 int turns[11] = {1,0,0,1,0,0,0,1,1,0,1};
 int swatch = 2;
@@ -36,33 +36,33 @@ void turnOff(){
 }
 
 void turnLeft() {
-  analogWrite(leftForward, leftSpeed); //
-  analogWrite(rightForward, rightSpeed); //
+  analogWrite(leftForward, 200); //
+  analogWrite(rightForward, 225); //
   delay(500); 
   turnOff();
-  delay(1000);
+  //delay(1000);
   while(digitalRead(leftSensor)== white ){
    analogWrite(leftBackward, leftSpeed);
    analogWrite(rightForward, rightSpeed);
-   delay(75);
-   turnOff();
-   delay(30);
+ //  delay(75);
+ //  turnOff();
+ //  delay(30);
   }
   turnOff();
 }
 
 void turnRight() {
-  analogWrite(leftForward, leftSpeed); //
-  analogWrite(rightForward, rightSpeed); //
+  analogWrite(leftForward, 200); //
+  analogWrite(rightForward, 225); //
   delay(500); 
   turnOff();
-  delay(1000); 
+ // delay(1000); 
    while(digitalRead(rightSensor)== white){
    analogWrite(rightBackward, rightSpeed);
    analogWrite(leftForward, leftSpeed);
-   delay(75);
-   turnOff();
-   delay(30);
+  // delay(75);
+  // turnOff();
+  // delay(30);
    } 
   turnOff();
 }
@@ -97,9 +97,9 @@ void loop() {
   else if (left==black) {
     digitalWrite(leftForward, LOW);
   }
-delay(75);
-turnOff();
-delay(2);
+//delay(75);
+//turnOff();
+//delay(2);
  
 }
 
