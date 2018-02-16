@@ -16,8 +16,8 @@ int right;
 int swtch;
 int leftSpeed = 180;
 int rightSpeed = 205;
-int turnNumber = 0;
-int turns[11] = {1,0,0,1,0,0,0,1,1,0,1};
+int turnNumber = 6;
+int turns[11] = {1,0,0,1,0,0,0,1,0,0};
 int swatch = 2;
 
 int rightForward = 6;
@@ -32,39 +32,74 @@ void turnOff(){
     digitalWrite(6,LOW);
     digitalWrite(9,LOW);
     digitalWrite(5,LOW);
-    delay(500);
+    //delay(500);
 }
 
 void turnLeft() {
   analogWrite(leftForward, 200); //
   analogWrite(rightForward, 225); //
-  delay(500); 
+  if(turnNumber < 8){
+  delay(400); 
+  }
+  else{
+    delay(350);
+  }
   turnOff();
   //delay(1000);
   while(digitalRead(leftSensor)== white ){
-   analogWrite(leftBackward, leftSpeed);
-   analogWrite(rightForward, rightSpeed);
+   analogWrite(leftBackward, 165);
+   analogWrite(rightForward, 190);
  //  delay(75);
  //  turnOff();
  //  delay(30);
+  }
+  if(turnNumber > 8){
+  analogWrite(rightBackward, 245);
+  analogWrite(leftBackward, 225);
+  delay(350);
   }
   turnOff();
 }
 
 void turnRight() {
-  analogWrite(leftForward, 200); //
-  analogWrite(rightForward, 225); //
-  delay(500); 
+  analogWrite(leftForward, 180); //
+  analogWrite(rightForward, 205); //
+  if(turnNumber < 8){
+  delay(400); 
+  }
+  else{
+    delay(350);
+  }
   turnOff();
  // delay(1000); 
    while(digitalRead(rightSensor)== white){
-   analogWrite(rightBackward, rightSpeed);
-   analogWrite(leftForward, leftSpeed);
+   analogWrite(rightBackward, 190);
+   analogWrite(leftForward, 165);
   // delay(75);
   // turnOff();
   // delay(30);
    } 
+   if(turnNumber > 8){
+  analogWrite(rightBackward, 245);
+  analogWrite(leftBackward, 225);
+  delay(350);
+  }
   turnOff();
+}
+
+void turn() {
+  turnOff();
+    if (turns[turnNumber]) {
+      turnLeft();
+    } else {
+      turnRight();
+    }
+    turnNumber++;
+    if (turnNumber>11) {
+        delay(1000000000);
+    }
+    turnOff();
+    delay(150);
 }
 void loop() {  
   left = digitalRead(leftSensor);
@@ -72,24 +107,45 @@ void loop() {
   while (swtch == HIGH){
     swtch = digitalRead(swatch);
   }
+  if (turnNumber>6 && !turns[turnNumber-1]) {
+    if (right==black&&left==white) {
+      analogWrite(leftForward, 165);
+      analogWrite(rightForward, 200);
+    } else if (left==black&&right==black) {
+       turn();
+    } else if (left==white&&right==white) {
+      analogWrite(leftForward, 175);
+      digitalWrite(rightForward, LOW);
+    }
+  } else if (turnNumber>6) {
+  if (right==white&&left==black) {
+      analogWrite(leftForward, 165);
+      analogWrite(rightForward, 200);
+    } else if (left==black&&right==black) {
+       turn();
+    } else if (left==white&&right==white) {
+      analogWrite(rightForward, 175);
+      digitalWrite(leftForward, LOW);
+    }
+  
+  }
+  else {
   if (left==white) {
-    analogWrite(leftForward, leftSpeed);
-   
+    if (turnNumber>6) {
+       analogWrite(leftForward, 145);
+    } else {
+       analogWrite(leftForward, 225);
+    }
  }
  if (right==white) {
-    analogWrite(rightForward, rightSpeed);
+  if (turnNumber>6) {
+    analogWrite(rightForward, 165);
+  } else {
+    analogWrite(rightForward, 225);
+  }
  }
  if (right==black&&left==black) {
-    turnOff();
-    if (turns[turnNumber]) {
-      turnLeft();
-    } else {
-      turnRight();
-    }
-    turnNumber++;
-    if (turnNumber>10) {
-        delay(1000000000);
-    }
+    turn();
   }
   else if (right==black) {
     digitalWrite(rightForward, LOW);
@@ -97,9 +153,12 @@ void loop() {
   else if (left==black) {
     digitalWrite(leftForward, LOW);
   }
-//delay(75);
-//turnOff();
-//delay(2);
+  }
+ // if (turnNumber>7) {
+//     delay(75);
+//     turnOff();
+ //    delay(10 );
+//  }
  
 }
 
