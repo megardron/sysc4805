@@ -16,7 +16,7 @@ int right;
 int swtch;
 int leftSpeed = 180;
 int rightSpeed = 205;
-int turnNumber = 6;
+int turnNumber = 0;
 int turns[11] = {1,0,0,1,0,0,0,1,0,0};
 int swatch = 2;
 
@@ -131,18 +131,10 @@ void loop() {
   }
   else {
   if (left==white) {
-    if (turnNumber>6) {
-       analogWrite(leftForward, 145);
-    } else {
-       analogWrite(leftForward, 225);
-    }
+       analogWrite(leftForward, 200);
  }
  if (right==white) {
-  if (turnNumber>6) {
-    analogWrite(rightForward, 165);
-  } else {
-    analogWrite(rightForward, 225);
-  }
+    analogWrite(rightForward, 200);
  }
  if (right==black&&left==black) {
     turn();
@@ -154,11 +146,5 @@ void loop() {
     digitalWrite(leftForward, LOW);
   }
   }
- // if (turnNumber>7) {
-//     delay(75);
-//     turnOff();
- //    delay(10 );
-//  }
- 
 }
 
